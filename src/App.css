@@ -28,7 +28,10 @@ header h1 {
   border-right: 3px solid #00ff00;
   display: inline-block;
   width: 0;
-  animation: typing 3s steps(19, end) forwards, blink-caret 0.75s step-end infinite;
+  animation: 
+    typing 3s steps(19, end) forwards,
+    blink-caret 0.75s step-end 4,
+    hide-caret 0s 3s forwards;
 }
 
 @keyframes typing {
@@ -49,10 +52,10 @@ header h1 {
   }
 }
 
-header h1.typed {
-  animation: none;
-  border-right: none;
-  width: auto;
+@keyframes hide-caret {
+  to {
+    border-right-color: transparent;
+  }
 }
 
 @media (max-width: 768px) {

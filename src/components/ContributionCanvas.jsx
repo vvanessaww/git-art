@@ -28,29 +28,8 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     
-    // Draw month labels at the top (only for grid-based styles)
+    // Render based on selected style first
     const gridStyles = ['rainbow', 'heatmap', 'pixel', 'text', 'name']
-    if (gridStyles.includes(style)) {
-      ctx.fillStyle = '#00ff00'
-      ctx.font = 'bold 10px "Courier New", monospace'
-      ctx.textAlign = 'left'
-      
-      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-      let currentMonth = -1
-      
-      contributionData.forEach((day, index) => {
-        const weekIndex = Math.floor(index / 7)
-        const date = new Date(day.date)
-        const month = date.getMonth()
-        
-        // Only draw label when month changes and it's the start of a week
-        if (month !== currentMonth && index % 7 === 0) {
-          currentMonth = month
-          const x = weekIndex * (cellSize + gap)
-          ctx.fillText(monthNames[month], x, 12)
-        }
-      })
-    }
 
     // Render based on selected style
     switch (style) {
@@ -84,6 +63,29 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
         break
       default:
         renderDefault(ctx, contributionData, cellSize, gap, canvas)
+    }
+    
+    // Draw month labels at the top (AFTER rendering the graph, only for grid-based styles)
+    if (gridStyles.includes(style)) {
+      ctx.fillStyle = '#00ff00'
+      ctx.font = 'bold 11px "Courier New", monospace'
+      ctx.textAlign = 'left'
+      
+      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      let currentMonth = -1
+      
+      contributionData.forEach((day, index) => {
+        const weekIndex = Math.floor(index / 7)
+        const date = new Date(day.date)
+        const month = date.getMonth()
+        
+        // Only draw label when month changes and it's the start of a week
+        if (month !== currentMonth && index % 7 === 0) {
+          currentMonth = month
+          const x = weekIndex * (cellSize + gap)
+          ctx.fillText(monthNames[month], x, 14)
+        }
+      })
     }
     
     // Render stats text at the bottom if enabled

@@ -73,13 +73,16 @@ function ContributionFetcher({ username, setUsername, setContributionData, setUs
   return (
     <div className="contribution-fetcher">
       <div className="input-group">
-        <input
-          type="text"
-          placeholder="Enter GitHub username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value.toLowerCase())}
-          onKeyPress={(e) => e.key === 'Enter' && fetchContributions()}
-        />
+        <div className="input-wrapper">
+          <span className="username-prefix">@</span>
+          <input
+            type="text"
+            placeholder="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value.toLowerCase())}
+            onKeyPress={(e) => e.key === 'Enter' && fetchContributions()}
+          />
+        </div>
         <button onClick={fetchContributions} disabled={loading}>
           {loading ? 'Loading...' : 'Generate Art'}
         </button>

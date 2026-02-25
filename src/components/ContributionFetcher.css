@@ -20,26 +20,41 @@
   }
 }
 
-.input-group input {
+.input-wrapper {
   flex: 1;
-  padding: 1rem;
+  display: flex;
+  align-items: center;
+  background: #000;
+  border: 2px solid #00ff00;
+  transition: box-shadow 0.3s;
+}
+
+.input-wrapper:focus-within {
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+.username-prefix {
+  padding: 1rem 0 1rem 1rem;
   font-size: 1rem;
   font-family: 'Courier New', Courier, monospace;
-  background: #000;
   color: #00ff00;
-  border: 2px solid #00ff00;
-  border-radius: 0;
-  transition: box-shadow 0.3s;
+  font-weight: bold;
+}
+
+.input-group input {
+  flex: 1;
+  padding: 1rem 1rem 1rem 0.5rem;
+  font-size: 1rem;
+  font-family: 'Courier New', Courier, monospace;
+  background: transparent;
+  color: #00ff00;
+  border: none;
+  outline: none;
 }
 
 .input-group input::placeholder {
   color: #00cc00;
   opacity: 0.6;
-}
-
-.input-group input:focus {
-  outline: none;
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 }
 
 .input-group button {

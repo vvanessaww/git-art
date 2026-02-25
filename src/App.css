@@ -23,15 +23,26 @@ header h1 {
   margin-bottom: 0.5rem;
   font-weight: 700;
   letter-spacing: 2px;
+  display: inline-block;
+  position: relative;
+}
+
+header h1::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  width: 3px;
+  height: 100%;
+  background-color: #00ff00;
+  animation: 
+    blink-caret 0.75s step-end 4;
+}
+
+header h1 {
   overflow: hidden;
   white-space: nowrap;
-  border-right: 3px solid #00ff00;
-  display: inline-block;
   width: 0;
-  animation: 
-    typing 3s steps(19, end) forwards,
-    blink-caret 0.75s step-end 4,
-    hide-caret 0s 3s forwards;
+  animation: typing 3s steps(19, end) forwards;
 }
 
 @keyframes typing {
@@ -45,16 +56,10 @@ header h1 {
 
 @keyframes blink-caret {
   from, to {
-    border-color: transparent;
+    opacity: 0;
   }
   50% {
-    border-color: #00ff00;
-  }
-}
-
-@keyframes hide-caret {
-  to {
-    border-right-color: transparent;
+    opacity: 1;
   }
 }
 

@@ -26,68 +26,33 @@ function ContributionFetcher({ username, setUsername, setContributionData, setUs
       const name = profile.name || username
       setUserName(name)
       
-      // Use GitHub GraphQL API to get actual contribution data
-      const query = `
-        query($username: String!) {
-          user(login: $username) {
-            contributionsCollection {
-              contributionCalendar {
-                weeks {
-                  contributionDays {
-                    date
-                    contributionCount
-                    contributionLevel
-                  }
-                }
-              }
-            }
-          }
-        }
-      `
+      // Fetch actual contribution graph data using CORS proxy
+      const corsProxy = 'https://corsproxy.io/?'
+      const contributionsUrl = `https://github.com/users/${username}/contributions`
       
-      const graphqlResponse = await fetch('https://api.github.com/graphql', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query,
-          variables: { username }
-        })
-      })
-
-      const graphqlData = await graphqlResponse.json()
+      const contribResponse = await fetch(corsProxy + encodeURIComponent(contributionsUrl))
+      const html = await contribResponse.text()
       
-      if (graphqlData.errors) {
-        throw new Error('Unable to fetch contribution data')
-      }
-
-      // Parse contribution data from GraphQL response
-      const weeks = graphqlData.data?.user?.contributionsCollection?.contributionCalendar?.weeks || []
-      const contributions = []
+      // Parse the SVG contribution graph
+      const parser = new DOMParser()
+      const doc = parser.parseFromString(html, 'text/html')
+      const rects = doc.querySelectorAll('rect.ContributionCalendar-day')
       
-      weeks.forEach(week => {
-        week.contributionDays.forEach(day => {
-          // Map contributionLevel (NONE, FIRST_QUARTILE, SECOND_QUARTILE, THIRD_QUARTILE, FOURTH_QUARTILE) to 0-4
-          const levelMap = {
-            'NONE': 0,
-            'FIRST_QUARTILE': 1,
-            'SECOND_QUARTILE': 2,
-            'THIRD_QUARTILE': 3,
-            'FOURTH_QUARTILE': 4
-          }
-          
-          contributions.push({
-            date: day.date,
-            count: day.contributionCount,
-            level: levelMap[day.contributionLevel] || 0
-          })
-        })
-      })
-
-      if (contributions.length === 0) {
+      if (rects.length === 0) {
         throw new Error('No contribution data found')
       }
+      
+      const contributions = Array.from(rects).map(rect => {
+        const date = rect.getAttribute('data-date')
+        const level = parseInt(rect.getAttribute('data-level')) || 0
+        const count = parseInt(rect.getAttribute('data-count') || rect.textContent) || 0
+        
+        return {
+          date,
+          count,
+          level
+        }
+      })
 
       setContributionData(contributions)
     } catch (err) {

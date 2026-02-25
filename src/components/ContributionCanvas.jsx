@@ -18,14 +18,39 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
     const weeks = Math.ceil(contributionData.length / 7)
     const days = 7
     const statsPadding = showStats ? 40 : 0
+    const topPadding = 20 // Space for month labels
     const rightPadding = cellSize + gap * 2 // Extra padding for right edge
     const bottomPadding = cellSize + gap * 2 // Extra padding for bottom edge
     // Add padding to prevent cutoff on all edges
     canvas.width = weeks * (cellSize + gap) + rightPadding
-    canvas.height = days * (cellSize + gap) + bottomPadding + statsPadding
+    canvas.height = days * (cellSize + gap) + bottomPadding + statsPadding + topPadding
 
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height)
+    
+    // Draw month labels at the top (only for grid-based styles)
+    const gridStyles = ['rainbow', 'heatmap', 'pixel', 'text', 'name']
+    if (gridStyles.includes(style)) {
+      ctx.fillStyle = '#00ff00'
+      ctx.font = 'bold 10px "Courier New", monospace'
+      ctx.textAlign = 'left'
+      
+      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      let currentMonth = -1
+      
+      contributionData.forEach((day, index) => {
+        const weekIndex = Math.floor(index / 7)
+        const date = new Date(day.date)
+        const month = date.getMonth()
+        
+        // Only draw label when month changes and it's the start of a week
+        if (month !== currentMonth && index % 7 === 0) {
+          currentMonth = month
+          const x = weekIndex * (cellSize + gap)
+          ctx.fillText(monthNames[month], x, 12)
+        }
+      })
+    }
 
     // Render based on selected style
     switch (style) {
@@ -79,9 +104,10 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
 
   const renderDefault = (ctx, data, cellSize, gap, canvas) => {
     const colors = ['#001100', '#003300', '#00aa00', '#00dd00', '#00ff00']
+    const topOffset = 20 // Offset for month labels
     data.forEach((day, index) => {
       const x = Math.floor(index / 7) * (cellSize + gap)
-      const y = (index % 7) * (cellSize + gap)
+      const y = (index % 7) * (cellSize + gap) + topOffset
       ctx.fillStyle = colors[day.level] || colors[0]
       ctx.fillRect(x, y, cellSize, cellSize)
       
@@ -93,9 +119,10 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
   }
 
   const renderRainbow = (ctx, data, cellSize, gap, canvas) => {
+    const topOffset = 20 // Offset for month labels
     data.forEach((day, index) => {
       const x = Math.floor(index / 7) * (cellSize + gap)
-      const y = (index % 7) * (cellSize + gap)
+      const y = (index % 7) * (cellSize + gap) + topOffset
       const hue = (index / data.length) * 360
       // Mix rainbow hue with contribution level for brightness
       const lightness = day.level === 0 ? 10 : 30 + (day.level * 15)
@@ -207,6 +234,7 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
     }
     
     const colors = ['#001100', '#003300', '#00aa00', '#00dd00', '#00ff00']
+    const topOffset = 20 // Offset for month labels
     
     // Get letter patterns
     const letters = text.toUpperCase().split('').map(char => getLetterPattern(char))
@@ -226,7 +254,7 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
     // First render ALL contribution data (full year of commits)
     data.forEach((day, index) => {
       const x = Math.floor(index / 7) * (cellSize + gap)
-      const y = (index % 7) * (cellSize + gap)
+      const y = (index % 7) * (cellSize + gap) + topOffset
       ctx.fillStyle = colors[day.level] || colors[0]
       ctx.fillRect(x, y, cellSize, cellSize)
       
@@ -243,7 +271,7 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
         for (let col = 0; col < letterWidth; col++) {
           if (letter[row][col] === 1) {
             const x = (currentX + col) * (cellSize + gap)
-            const y = (startY + row) * (cellSize + gap)
+            const y = (startY + row) * (cellSize + gap) + topOffset
             
             // Draw text in bright cyan with transparency
             ctx.fillStyle = 'rgba(0, 255, 255, 0.7)'
@@ -261,9 +289,10 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
   }
 
   const renderHeatmap = (ctx, data, cellSize, gap, canvas) => {
+    const topOffset = 20 // Offset for month labels
     data.forEach((day, index) => {
       const x = Math.floor(index / 7) * (cellSize + gap)
-      const y = (index % 7) * (cellSize + gap)
+      const y = (index % 7) * (cellSize + gap) + topOffset
       
       // Heat map colors: navy blue -> green -> yellow -> orange -> red
       let color, glowIntensity
@@ -421,9 +450,10 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
   }
 
   const renderPixel = (ctx, data, cellSize, gap, canvas) => {
+    const topOffset = 20 // Offset for month labels
     data.forEach((day, index) => {
       const x = Math.floor(index / 7) * (cellSize + gap)
-      const y = (index % 7) * (cellSize + gap)
+      const y = (index % 7) * (cellSize + gap) + topOffset
       // Pixelated effect with green terminal colors
       const colors = ['#001100', '#003300', '#00aa00', '#00dd00', '#00ff00']
       ctx.fillStyle = colors[day.level] || colors[0]

@@ -2,10 +2,11 @@ import { useEffect } from 'react'
 import './ArtStyleSelector.css'
 
 function ArtStyleSelector({ selectedStyle, setSelectedStyle, customText, setCustomText, userName }) {
-  // Auto-populate name when "name" style is selected
+  // Auto-populate name when "name" style is selected (first name only)
   useEffect(() => {
     if (selectedStyle === 'name' && userName && !customText) {
-      setCustomText(userName.toUpperCase())
+      const firstName = userName.split(' ')[0]
+      setCustomText(firstName.toUpperCase())
     }
   }, [selectedStyle, userName, customText, setCustomText])
   const styles = [
@@ -43,7 +44,7 @@ function ArtStyleSelector({ selectedStyle, setSelectedStyle, customText, setCust
             maxLength={20}
           />
           {selectedStyle === 'name' && userName && (
-            <p className="auto-detected">Auto-detected: {userName}</p>
+            <p className="auto-detected">Auto-detected: {userName.split(' ')[0]}</p>
           )}
         </div>
       )}

@@ -15,24 +15,41 @@ function ContributionFetcher({ username, setUsername, setContributionData }) {
     setError(null)
 
     try {
-      // GitHub's contribution graph uses SVG data
-      // We'll scrape the user's profile page for contribution data
-      const response = await fetch(`https://github.com/users/${username}/contributions`)
-      const html = await response.text()
+      // Use GitHub's events API to get contribution data
+      const response = await fetch(`https://api.github.com/users/${username}/events/public?per_page=100`)
       
-      // Parse the contribution graph SVG
-      const parser = new DOMParser()
-      const doc = parser.parseFromString(html, 'text/html')
-      const rects = doc.querySelectorAll('svg.js-calendar-graph-svg rect.ContributionCalendar-day')
-      
-      const contributions = Array.from(rects).map(rect => ({
-        date: rect.getAttribute('data-date'),
-        count: parseInt(rect.getAttribute('data-level')) || 0,
-        level: parseInt(rect.getAttribute('data-level')) || 0
-      }))
+      if (!response.ok) {
+        throw new Error(response.status === 404 ? 'User not found' : 'Failed to fetch data')
+      }
 
-      if (contributions.length === 0) {
-        throw new Error('No contribution data found')
+      const events = await response.json()
+      
+      // Generate a year's worth of contribution data based on events
+      const contributions = []
+      const today = new Date()
+      const oneYearAgo = new Date(today)
+      oneYearAgo.setFullYear(today.getFullYear() - 1)
+      
+      // Create contribution map from events
+      const eventsByDate = {}
+      events.forEach(event => {
+        const date = new Date(event.created_at).toISOString().split('T')[0]
+        eventsByDate[date] = (eventsByDate[date] || 0) + 1
+      })
+      
+      // Fill 52 weeks * 7 days = 364 days
+      for (let i = 0; i < 364; i++) {
+        const date = new Date(today)
+        date.setDate(date.getDate() - i)
+        const dateStr = date.toISOString().split('T')[0]
+        const count = eventsByDate[dateStr] || 0
+        const level = Math.min(4, Math.floor(count / 2))
+        
+        contributions.unshift({
+          date: dateStr,
+          count: count,
+          level: level
+        })
       }
 
       setContributionData(contributions)

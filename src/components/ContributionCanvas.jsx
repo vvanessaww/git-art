@@ -102,22 +102,52 @@ function ContributionCanvas({ contributionData, style, customText }) {
     const maxRadius = Math.min(centerX, centerY) * 0.9
     
     data.forEach((day, index) => {
-      const angle = (index / data.length) * Math.PI * 8 // More spirals
+      const angle = (index / data.length) * Math.PI * 8 // Multiple spiral arms
       const radius = (index / data.length) * maxRadius
       const x = centerX + Math.cos(angle) * radius
       const y = centerY + Math.sin(angle) * radius
-      const intensity = day.level / 4
       
-      // Terminal green with glow
-      const alpha = 0.3 + intensity * 0.7
-      ctx.fillStyle = `rgba(0, 255, 0, ${alpha})`
-      ctx.fillRect(x - cellSize / 2, y - cellSize / 2, cellSize, cellSize)
+      // Use different colors and sizes based on contribution level
+      let color, size
+      switch (day.level) {
+        case 0:
+          color = '#1a1a2e' // Dark blue (barely visible)
+          size = cellSize * 0.3
+          break
+        case 1:
+          color = '#00aa00' // Green
+          size = cellSize * 0.5
+          break
+        case 2:
+          color = '#ffd700' // Yellow
+          size = cellSize * 0.7
+          break
+        case 3:
+          color = '#ff8c00' // Orange
+          size = cellSize * 0.9
+          break
+        case 4:
+          color = '#ff4500' // Red (most active)
+          size = cellSize * 1.2
+          break
+        default:
+          color = '#1a1a2e'
+          size = cellSize * 0.3
+      }
       
-      // Add glow for active cells
-      if (day.level > 0) {
-        ctx.shadowColor = '#00ff00'
-        ctx.shadowBlur = 5
-        ctx.fillRect(x - cellSize / 2, y - cellSize / 2, cellSize, cellSize)
+      // Draw circular dots instead of squares for smoother spiral
+      ctx.fillStyle = color
+      ctx.beginPath()
+      ctx.arc(x, y, size / 2, 0, Math.PI * 2)
+      ctx.fill()
+      
+      // Add glow for high activity
+      if (day.level >= 3) {
+        ctx.shadowColor = color
+        ctx.shadowBlur = 8
+        ctx.beginPath()
+        ctx.arc(x, y, size / 2, 0, Math.PI * 2)
+        ctx.fill()
         ctx.shadowBlur = 0
       }
     })

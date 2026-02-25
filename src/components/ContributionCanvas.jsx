@@ -138,17 +138,7 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
     
     const centerX = canvas.width / 2
     const centerY = canvas.height / 2
-    const maxRadius = Math.min(centerX, centerY) * 0.85
-    
-    // Draw center marker (start of year)
-    ctx.fillStyle = '#00ff0044'
-    ctx.beginPath()
-    ctx.arc(centerX, centerY, 8, 0, Math.PI * 2)
-    ctx.fill()
-    ctx.fillStyle = '#00ff00'
-    ctx.font = 'bold 10px "Courier New"'
-    ctx.textAlign = 'center'
-    ctx.fillText('JAN', centerX, centerY + 20)
+    const maxRadius = Math.min(centerX, centerY) * 0.9
     
     data.forEach((day, index) => {
       // 3 complete rotations (easier to follow than 4)
@@ -201,12 +191,6 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
         ctx.shadowBlur = 0
       }
     })
-    
-    // Draw outer label (end of year)
-    ctx.fillStyle = '#00ff00'
-    ctx.font = 'bold 10px "Courier New"'
-    ctx.textAlign = 'center'
-    ctx.fillText('DEC', centerX, centerY - maxRadius - 10)
   }
 
   const renderText = (ctx, data, cellSize, gap, text, canvas) => {

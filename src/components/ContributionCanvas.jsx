@@ -115,10 +115,21 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
     
     const centerX = canvas.width / 2
     const centerY = canvas.height / 2
-    const maxRadius = Math.min(centerX, centerY) * 0.9
+    const maxRadius = Math.min(centerX, centerY) * 0.85
+    
+    // Draw center marker (start of year)
+    ctx.fillStyle = '#00ff0044'
+    ctx.beginPath()
+    ctx.arc(centerX, centerY, 8, 0, Math.PI * 2)
+    ctx.fill()
+    ctx.fillStyle = '#00ff00'
+    ctx.font = 'bold 10px "Courier New"'
+    ctx.textAlign = 'center'
+    ctx.fillText('JAN', centerX, centerY + 20)
     
     data.forEach((day, index) => {
-      const angle = (index / data.length) * Math.PI * 8 // Multiple spiral arms
+      // 3 complete rotations (easier to follow than 4)
+      const angle = (index / data.length) * Math.PI * 6
       const radius = (index / data.length) * maxRadius
       const x = centerX + Math.cos(angle) * radius
       const y = centerY + Math.sin(angle) * radius
@@ -127,46 +138,52 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
       let color, size
       switch (day.level) {
         case 0:
-          color = '#1a1a2e' // Dark blue (barely visible)
-          size = cellSize * 0.3
+          color = '#1a1a2e' // Dark blue (no commits)
+          size = cellSize * 0.4
           break
         case 1:
           color = '#00aa00' // Green
-          size = cellSize * 0.5
+          size = cellSize * 0.6
           break
         case 2:
           color = '#ffd700' // Yellow
-          size = cellSize * 0.7
+          size = cellSize * 0.8
           break
         case 3:
           color = '#ff8c00' // Orange
-          size = cellSize * 0.9
+          size = cellSize * 1.0
           break
         case 4:
           color = '#ff4500' // Red (most active)
-          size = cellSize * 1.2
+          size = cellSize * 1.3
           break
         default:
           color = '#1a1a2e'
-          size = cellSize * 0.3
+          size = cellSize * 0.4
       }
       
-      // Draw circular dots instead of squares for smoother spiral
+      // Draw circular dots
       ctx.fillStyle = color
       ctx.beginPath()
       ctx.arc(x, y, size / 2, 0, Math.PI * 2)
       ctx.fill()
       
-      // Add glow for high activity
+      // Add glow for high activity days
       if (day.level >= 3) {
         ctx.shadowColor = color
-        ctx.shadowBlur = 8
+        ctx.shadowBlur = 10
         ctx.beginPath()
         ctx.arc(x, y, size / 2, 0, Math.PI * 2)
         ctx.fill()
         ctx.shadowBlur = 0
       }
     })
+    
+    // Draw outer label (end of year)
+    ctx.fillStyle = '#00ff00'
+    ctx.font = 'bold 10px "Courier New"'
+    ctx.textAlign = 'center'
+    ctx.fillText('DEC', centerX, centerY - maxRadius - 10)
   }
 
   const renderText = (ctx, data, cellSize, gap, text, canvas) => {

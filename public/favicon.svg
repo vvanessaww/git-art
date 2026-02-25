@@ -1,0 +1,51 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="64" height="64" fill="#000000"/>
+  <!-- Grid pattern -->
+  <g opacity="0.8">
+    <rect x="8" y="8" width="6" height="6" fill="#003300"/>
+    <rect x="16" y="8" width="6" height="6" fill="#00ff00"/>
+    <rect x="24" y="8" width="6" height="6" fill="#003300"/>
+    <rect x="32" y="8" width="6" height="6" fill="#00dd00"/>
+    <rect x="40" y="8" width="6" height="6" fill="#00aa00"/>
+    <rect x="48" y="8" width="6" height="6" fill="#003300"/>
+    
+    <rect x="8" y="16" width="6" height="6" fill="#00aa00"/>
+    <rect x="16" y="16" width="6" height="6" fill="#003300"/>
+    <rect x="24" y="16" width="6" height="6" fill="#00ff00"/>
+    <rect x="32" y="16" width="6" height="6" fill="#003300"/>
+    <rect x="40" y="16" width="6" height="6" fill="#00dd00"/>
+    <rect x="48" y="16" width="6" height="6" fill="#00aa00"/>
+    
+    <rect x="8" y="24" width="6" height="6" fill="#003300"/>
+    <rect x="16" y="24" width="6" height="6" fill="#00dd00"/>
+    <rect x="24" y="24" width="6" height="6" fill="#00aa00"/>
+    <rect x="32" y="24" width="6" height="6" fill="#00ff00"/>
+    <rect x="40" y="24" width="6" height="6" fill="#003300"/>
+    <rect x="48" y="24" width="6" height="6" fill="#00dd00"/>
+    
+    <rect x="8" y="32" width="6" height="6" fill="#00ff00"/>
+    <rect x="16" y="32" width="6" height="6" fill="#00aa00"/>
+    <rect x="24" y="32" width="6" height="6" fill="#003300"/>
+    <rect x="32" y="32" width="6" height="6" fill="#00aa00"/>
+    <rect x="40" y="32" width="6" height="6" fill="#00ff00"/>
+    <rect x="48" y="32" width="6" height="6" fill="#003300"/>
+    
+    <rect x="8" y="40" width="6" height="6" fill="#003300"/>
+    <rect x="16" y="40" width="6" height="6" fill="#00dd00"/>
+    <rect x="24" y="40" width="6" height="6" fill="#00ff00"/>
+    <rect x="32" y="40" width="6" height="6" fill="#003300"/>
+    <rect x="40" y="40" width="6" height="6" fill="#00aa00"/>
+    <rect x="48" y="40" width="6" height="6" fill="#00ff00"/>
+    
+    <rect x="8" y="48" width="6" height="6" fill="#00aa00"/>
+    <rect x="16" y="48" width="6" height="6" fill="#003300"/>
+    <rect x="24" y="48" width="6" height="6" fill="#00dd00"/>
+    <rect x="32" y="48" width="6" height="6" fill="#00ff00"/>
+    <rect x="40" y="48" width="6" height="6" fill="#003300"/>
+    <rect x="48" y="48" width="6" height="6" fill="#00dd00"/>
+  </g>
+  <!-- Terminal cursor effect -->
+  <rect x="54" y="54" width="6" height="6" fill="#00ff00">
+    <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+  </rect>
+</svg>

@@ -64,7 +64,20 @@ function ContributionFetcher({ username, setUsername, setContributionData, setUs
 
       setContributionData(contributions)
     } catch (err) {
-      setError(`Failed to fetch contributions: ${err.message}`)
+      console.error('Fetch error:', err)
+      let errorMessage = 'Failed to fetch contributions'
+      
+      if (err.message.includes('User not found')) {
+        errorMessage = `User "${username}" not found. Check the username and try again.`
+      } else if (err.message.includes('No contribution data')) {
+        errorMessage = `No contribution data found for ${username}. The user might be new or have private contributions.`
+      } else if (!navigator.onLine) {
+        errorMessage = 'No internet connection. Please check your network and try again.'
+      } else {
+        errorMessage = `Error: ${err.message}. Please try again later.`
+      }
+      
+      setError(errorMessage)
     } finally {
       setLoading(false)
     }

@@ -136,10 +136,14 @@ function ContributionCanvas({ contributionData, style, customText }) {
     const letterHeight = 7
     const letterSpacing = 1
     
+    // Calculate grid dimensions from actual data
+    const weeks = Math.ceil(data.length / 7)
+    const days = 7
+    
     // Calculate total width needed
     const totalWidth = letters.length * (letterWidth + letterSpacing) - letterSpacing
-    const startX = Math.floor((53 - totalWidth) / 2)
-    const startY = Math.floor((7 - letterHeight) / 2)
+    const startX = Math.floor((weeks - totalWidth) / 2)
+    const startY = Math.floor((days - letterHeight) / 2)
     
     // First fill background with all contribution data
     data.forEach((day, index) => {

@@ -1,44 +1,50 @@
-# 🎨 Git Art Generator
+# Git Art Generator
 
 Transform your GitHub contribution graph into beautiful art!
 
 ## Features
 
-- **Multiple Art Styles**: Choose from 6 different visualization styles
-- **Name-Shaped Graph**: Display your commits in the shape of your name
-- **Classic Grid**: Traditional GitHub contribution view
-- **Wave Pattern**: Flowing wave visualization
-- **Spiral**: Artistic spiral arrangement
-- **Heart Shape**: Love your contributions ❤️
-- **Random Art**: Surprise artistic generation
+- **Fetch GitHub Contributions**: Enter any GitHub username to load their contribution data
+- **Multiple Art Styles**:
+  - Classic GitHub - Traditional contribution graph
+  - Rainbow - Colorful gradient effect
+  - Wave Pattern - Contributions flow like waves
+  - Spiral - Contributions spiral outward
+  - Custom Text - Shape contributions into text
+  - Your Name - Spell out your name in commits
+  - Heatmap - Intensity-based color mapping
+  - Pixel Art - Retro pixel-style rendering
+- **Download**: Save your art as PNG
 
-## How to Use
-
-1. Enter your GitHub username
-2. Choose your preferred art style
-3. Download your personalized git art
-
-## Development
+## Getting Started
 
 ```bash
 npm install
 npm run dev
 ```
 
+## How It Works
+
+1. Enter a GitHub username
+2. Click "Generate Art" to fetch contribution data
+3. Choose an art style from the gallery
+4. For text/name styles, enter custom text
+5. Download your creation!
+
 ## Tech Stack
 
 - React + Vite
 - Canvas API for rendering
-- GitHub Contributions API
+- GitHub profile scraping for contribution data
 
-## Deploy
+## Future Ideas
 
-This app can be easily deployed to Vercel, Netlify, or GitHub Pages.
-
-```bash
-npm run build
-```
+- More art styles (fractal, mandala, etc.)
+- Color customization
+- Animation effects
+- Share to social media
+- Commit calendar generation (reverse: create commits to match a pattern)
 
 ---
 
-Built with ❤️ for GitHub artists
+Created with ❤️ for developers who want to make their contribution graphs more interesting!

@@ -1,43 +1,31 @@
-.app {
+.App {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0d1117 0%, #1a1e2e 100%);
-  color: #c9d1d9;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 2rem;
 }
 
 header {
   text-align: center;
+  color: white;
   margin-bottom: 3rem;
 }
 
 header h1 {
   font-size: 3rem;
   margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, #39d353 0%, #26a641 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-weight: 700;
 }
 
 header p {
   font-size: 1.2rem;
-  color: #8b949e;
+  opacity: 0.9;
 }
 
-.error {
-  background: #da3633;
-  color: white;
-  padding: 1rem;
-  border-radius: 8px;
-  margin: 2rem auto;
-  max-width: 600px;
-  text-align: center;
-}
-
-footer {
-  text-align: center;
-  margin-top: 4rem;
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
   padding: 2rem;
-  color: #8b949e;
-  font-size: 0.9rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }

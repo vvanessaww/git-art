@@ -11,9 +11,10 @@ function ContributionCanvas({ contributionData, style, customText }) {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
     
-    // Set canvas size based on actual data
-    const cellSize = 12
-    const gap = 2
+    // Set canvas size based on actual data and screen size
+    const isMobile = window.innerWidth < 768
+    const cellSize = isMobile ? 8 : 12
+    const gap = isMobile ? 1 : 2
     const weeks = Math.ceil(contributionData.length / 7)
     const days = 7
     canvas.width = weeks * (cellSize + gap)

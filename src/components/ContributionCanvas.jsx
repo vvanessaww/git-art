@@ -183,14 +183,39 @@ function ContributionCanvas({ contributionData, style, customText }) {
   }
 
   const renderHeatmap = (ctx, data, cellSize, gap, canvas) => {
-    const maxLevel = Math.max(...data.map(d => d.level), 1)
     data.forEach((day, index) => {
       const x = Math.floor(index / 7) * (cellSize + gap)
       const y = (index % 7) * (cellSize + gap)
-      const intensity = day.level / maxLevel
-      // Terminal green heatmap
-      ctx.fillStyle = `rgb(0, ${Math.floor(255 * intensity)}, 0)`
+      
+      // Heat map colors: navy blue -> green -> yellow -> orange -> red
+      let color
+      switch (day.level) {
+        case 0:
+          color = '#1a1a2e' // Navy blue (cold - no commits)
+          break
+        case 1:
+          color = '#16c784' // Green (warming up)
+          break
+        case 2:
+          color = '#ffd700' // Yellow (getting hot)
+          break
+        case 3:
+          color = '#ff8c00' // Orange (hot)
+          break
+        case 4:
+          color = '#ff4500' // Red-orange (very hot!)
+          break
+        default:
+          color = '#1a1a2e'
+      }
+      
+      ctx.fillStyle = color
       ctx.fillRect(x, y, cellSize, cellSize)
+      
+      // Add subtle border
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)'
+      ctx.lineWidth = 0.5
+      ctx.strokeRect(x, y, cellSize, cellSize)
     })
   }
 

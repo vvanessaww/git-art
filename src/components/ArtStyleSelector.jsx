@@ -9,9 +9,7 @@ function ArtStyleSelector({ selectedStyle, setSelectedStyle, customText, setCust
     }
   }, [selectedStyle, userName, customText, setCustomText])
   const styles = [
-    { id: 'default', name: 'Classic GitHub', description: 'Traditional contribution graph' },
     { id: 'rainbow', name: 'Rainbow', description: 'Colorful gradient effect' },
-    { id: 'wave', name: 'Wave Pattern', description: 'Contributions flow like waves' },
     { id: 'spiral', name: 'Spiral', description: 'Contributions spiral outward' },
     { id: 'text', name: 'Custom Text', description: 'Shape contributions into text' },
     { id: 'name', name: 'Your Name', description: 'Spell out your name in commits' },

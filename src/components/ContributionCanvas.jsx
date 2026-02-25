@@ -19,14 +19,35 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
     const days = 7
     const statsPadding = showStats ? 40 : 0
     const topPadding = 20 // Space for month labels
+    const leftPadding = 30 // Space for day labels (Mon/Wed/Fri)
     const rightPadding = cellSize + gap * 2 // Extra padding for right edge
     const bottomPadding = cellSize + gap * 2 // Extra padding for bottom edge
+    
+    // Styles that need day labels
+    const dayLabelStyles = ['rainbow', 'heatmap', 'pixel', 'text', 'name']
+    const needsDayLabels = dayLabelStyles.includes(style)
+    
     // Add padding to prevent cutoff on all edges
-    canvas.width = weeks * (cellSize + gap) + rightPadding
+    canvas.width = weeks * (cellSize + gap) + rightPadding + (needsDayLabels ? leftPadding : 0)
     canvas.height = days * (cellSize + gap) + bottomPadding + statsPadding + topPadding
 
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height)
+    
+    // Draw day labels on the left (Mon, Wed, Fri) for grid-based styles
+    if (needsDayLabels) {
+      ctx.fillStyle = '#00ff00'
+      ctx.font = 'bold 9px "Courier New", monospace'
+      ctx.textAlign = 'right'
+      
+      const dayLabels = ['Mon', '', 'Wed', '', 'Fri', '', '']
+      dayLabels.forEach((label, index) => {
+        if (label) {
+          const y = (index * (cellSize + gap)) + topPadding + cellSize / 2 + 3
+          ctx.fillText(label, leftPadding - 5, y)
+        }
+      })
+    }
     
     // Render based on selected style first
     const gridStyles = ['rainbow', 'heatmap', 'pixel', 'text', 'name', 'tetris', 'audio']
@@ -84,7 +105,8 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
         // Only draw label when month changes, it's the start of a week, and it's from current year
         if (month !== currentMonth && index % 7 === 0 && year === currentYear) {
           currentMonth = month
-          const x = weekIndex * (cellSize + gap)
+          const leftOffset = dayLabelStyles.includes(style) ? 30 : 0
+          const x = weekIndex * (cellSize + gap) + leftOffset
           ctx.fillText(monthNames[month], x, 14)
         }
       })
@@ -109,8 +131,9 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
   const renderDefault = (ctx, data, cellSize, gap, canvas) => {
     const colors = ['#001100', '#003300', '#00aa00', '#00dd00', '#00ff00']
     const topOffset = 20 // Offset for month labels
+    const leftOffset = 30 // Offset for day labels
     data.forEach((day, index) => {
-      const x = Math.floor(index / 7) * (cellSize + gap)
+      const x = Math.floor(index / 7) * (cellSize + gap) + leftOffset
       const y = (index % 7) * (cellSize + gap) + topOffset
       ctx.fillStyle = colors[day.level] || colors[0]
       ctx.fillRect(x, y, cellSize, cellSize)
@@ -124,8 +147,9 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
 
   const renderRainbow = (ctx, data, cellSize, gap, canvas) => {
     const topOffset = 20 // Offset for month labels
+    const leftOffset = 30 // Offset for day labels
     data.forEach((day, index) => {
-      const x = Math.floor(index / 7) * (cellSize + gap)
+      const x = Math.floor(index / 7) * (cellSize + gap) + leftOffset
       const y = (index % 7) * (cellSize + gap) + topOffset
       const hue = (index / data.length) * 360
       // Mix rainbow hue with contribution level for brightness
@@ -239,6 +263,7 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
     
     const colors = ['#001100', '#003300', '#00aa00', '#00dd00', '#00ff00']
     const topOffset = 20 // Offset for month labels
+    const leftOffset = 30 // Offset for day labels
     
     // Get letter patterns
     const letters = text.toUpperCase().split('').map(char => getLetterPattern(char))
@@ -257,7 +282,7 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
     
     // First render ALL contribution data (full year of commits)
     data.forEach((day, index) => {
-      const x = Math.floor(index / 7) * (cellSize + gap)
+      const x = Math.floor(index / 7) * (cellSize + gap) + leftOffset
       const y = (index % 7) * (cellSize + gap) + topOffset
       ctx.fillStyle = colors[day.level] || colors[0]
       ctx.fillRect(x, y, cellSize, cellSize)
@@ -274,7 +299,7 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
       for (let row = 0; row < letterHeight; row++) {
         for (let col = 0; col < letterWidth; col++) {
           if (letter[row][col] === 1) {
-            const x = (currentX + col) * (cellSize + gap)
+            const x = (currentX + col) * (cellSize + gap) + leftOffset
             const y = (startY + row) * (cellSize + gap) + topOffset
             
             // Draw text in bright cyan with transparency
@@ -294,8 +319,9 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
 
   const renderHeatmap = (ctx, data, cellSize, gap, canvas) => {
     const topOffset = 20 // Offset for month labels
+    const leftOffset = 30 // Offset for day labels
     data.forEach((day, index) => {
-      const x = Math.floor(index / 7) * (cellSize + gap)
+      const x = Math.floor(index / 7) * (cellSize + gap) + leftOffset
       const y = (index % 7) * (cellSize + gap) + topOffset
       
       // Heat map colors: navy blue -> green -> yellow -> orange -> red
@@ -455,8 +481,9 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
 
   const renderPixel = (ctx, data, cellSize, gap, canvas) => {
     const topOffset = 20 // Offset for month labels
+    const leftOffset = 30 // Offset for day labels
     data.forEach((day, index) => {
-      const x = Math.floor(index / 7) * (cellSize + gap)
+      const x = Math.floor(index / 7) * (cellSize + gap) + leftOffset
       const y = (index % 7) * (cellSize + gap) + topOffset
       // Pixelated effect with green terminal colors
       const colors = ['#001100', '#003300', '#00aa00', '#00dd00', '#00ff00']

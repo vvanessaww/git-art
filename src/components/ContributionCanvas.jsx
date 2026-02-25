@@ -29,7 +29,7 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     
     // Render based on selected style first
-    const gridStyles = ['rainbow', 'heatmap', 'pixel', 'text', 'name']
+    const gridStyles = ['rainbow', 'heatmap', 'pixel', 'text', 'name', 'tetris', 'audio']
 
     // Render based on selected style
     switch (style) {

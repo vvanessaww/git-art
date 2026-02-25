@@ -77,7 +77,7 @@ function ContributionFetcher({ username, setUsername, setContributionData, setUs
           type="text"
           placeholder="Enter GitHub username"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => setUsername(e.target.value.toLowerCase())}
           onKeyPress={(e) => e.key === 'Enter' && fetchContributions()}
         />
         <button onClick={fetchContributions} disabled={loading}>

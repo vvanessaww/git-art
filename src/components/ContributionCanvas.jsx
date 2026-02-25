@@ -379,12 +379,12 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
     ctx.fillRect(0, 0, canvas.width, canvas.height)
     
     // Group data by weeks
-    const weeks = Math.ceil(data.length / 7)
-    const barWidth = Math.floor(canvas.width / weeks) - gap
+    const numWeeks = Math.ceil(data.length / 7)
+    const barWidth = Math.floor(canvas.width / numWeeks) - gap
     
-    weeks.forEach((_, weekIndex) => {
+    for (let weekIndex = 0; weekIndex < numWeeks; weekIndex++) {
       const weekData = data.slice(weekIndex * 7, (weekIndex + 1) * 7)
-      const weekAvg = weekData.reduce((sum, day) => sum + day.level, 0) / 7
+      const weekAvg = weekData.reduce((sum, day) => sum + day.level, 0) / weekData.length
       
       // Calculate bar height
       const maxHeight = canvas.height - 40
@@ -415,7 +415,7 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
         ctx.fillStyle = '#ffffff'
         ctx.fillRect(x, y - 3, barWidth, 3)
       }
-    })
+    }
     
     ctx.shadowBlur = 0
   }

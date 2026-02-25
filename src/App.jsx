@@ -15,12 +15,14 @@ function App() {
 
   return (
     <div className="App">
-      <header>
-        <h1>Git Art Generator</h1>
-        <p>Transform your GitHub contribution graph into art</p>
-      </header>
-      
-      <main>
+      <div className="arcade-cabinet">
+        <header>
+          <h1 className="arcade-title">Git Art Arcade</h1>
+          <p className="arcade-subtitle">Player 1 Ready!</p>
+          <div className="insert-coin">★ Insert Coin ★</div>
+        </header>
+        
+        <main>
         <ContributionFetcher 
           username={username}
           setUsername={setUsername}
@@ -49,7 +51,15 @@ function App() {
             />
           </>
         )}
-      </main>
+        </main>
+        
+        <div className="control-panel">
+          <div className="joystick"></div>
+          <button className="arcade-button btn-green">Start</button>
+          <button className="arcade-button btn-blue">Select</button>
+          <button className="arcade-button btn-yellow">Coin</button>
+        </div>
+      </div>
       
       <footer className="app-footer">
         <div className="footer-links">

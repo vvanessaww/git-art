@@ -1,99 +1,153 @@
 .contribution-fetcher {
   margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .input-group {
   display: flex;
   gap: 1rem;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-@media (max-width: 768px) {
-  .input-group {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .input-group button {
-    padding: 0.75rem 1.5rem;
-  }
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .input-wrapper {
   flex: 1;
+  min-width: 250px;
+  position: relative;
   display: flex;
   align-items: center;
   background: #000;
-  border: 2px solid #00ff00;
-  transition: box-shadow 0.3s;
-}
-
-.input-wrapper:focus-within {
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+  border: 3px solid #00ffff;
+  padding: 0 1rem;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
 }
 
 .username-prefix {
-  padding: 1rem 0 1rem 1rem;
-  font-size: 1rem;
-  font-family: 'Courier New', Courier, monospace;
-  color: #00ff00;
-  font-weight: bold;
+  font-size: 1.5rem;
+  color: #ffff00;
+  font-family: 'Press Start 2P', monospace;
+  margin-right: 0.5rem;
 }
 
-.input-group input {
+.input-wrapper input {
   flex: 1;
-  padding: 1rem 1rem 1rem 0.5rem;
+  padding: 1rem 0;
   font-size: 1rem;
-  font-family: 'Courier New', Courier, monospace;
-  background: transparent;
-  color: #00ff00;
   border: none;
+  background: transparent;
+  color: #ffffff;
+  font-family: 'Press Start 2P', monospace;
+  text-transform: lowercase;
+}
+
+.input-wrapper input:focus {
   outline: none;
 }
 
-.input-group input::placeholder {
-  color: #00cc00;
-  opacity: 0.6;
+.input-wrapper input::placeholder {
+  color: #666;
+  opacity: 1;
 }
 
 .input-group button {
   padding: 1rem 2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  font-family: 'Courier New', Courier, monospace;
-  background: #00ff00;
-  color: #000;
-  border: 2px solid #00ff00;
-  border-radius: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: none;
   cursor: pointer;
-  transition: all 0.2s;
+  font-family: 'Press Start 2P', monospace;
   text-transform: uppercase;
+  background: linear-gradient(180deg, #ff1493 0%, #c71585 100%);
+  color: #ffff00;
+  border: 3px solid #ffff00;
+  box-shadow: 
+    0 5px 15px rgba(255, 20, 147, 0.5),
+    0 0 20px rgba(255, 255, 0, 0.3);
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
 }
 
 .input-group button::before {
-  content: '[ ';
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 0, 0.4), transparent);
+  transition: left 0.3s;
 }
 
-.input-group button::after {
-  content: ' ]';
+.input-group button:hover::before {
+  left: 100%;
 }
 
-.input-group button:hover:not(:disabled) {
-  background: #000;
-  color: #00ff00;
-  box-shadow: 0 0 15px rgba(0, 255, 0, 0.6);
+.input-group button:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 7px 20px rgba(255, 20, 147, 0.7),
+    0 0 30px rgba(255, 255, 0, 0.5);
+}
+
+.input-group button:active {
+  transform: translateY(2px);
+  box-shadow: 
+    0 2px 5px rgba(255, 20, 147, 0.5),
+    0 0 10px rgba(255, 255, 0, 0.3);
 }
 
 .input-group button:disabled {
-  opacity: 0.4;
+  opacity: 0.5;
   cursor: not-allowed;
+  animation: loading 1s infinite;
+}
+
+@keyframes loading {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
 }
 
 .error {
-  color: #ff0000;
-  text-align: center;
   margin-top: 1rem;
-  font-weight: 500;
-  text-shadow: 0 0 5px #ff0000;
+  padding: 1rem;
+  background: #330000;
+  border: 3px solid #ff0000;
+  color: #ff6666;
+  text-align: center;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.6rem;
+  animation: errorShake 0.5s;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+}
+
+@keyframes errorShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+@media (max-width: 768px) {
+  .input-wrapper {
+    min-width: 100%;
+  }
+  
+  .input-wrapper input {
+    font-size: 0.8rem;
+  }
+  
+  .username-prefix {
+    font-size: 1.2rem;
+  }
+  
+  .input-group button {
+    width: 100%;
+    font-size: 0.7rem;
+  }
+  
+  .error {
+    font-size: 0.5rem;
+  }
 }

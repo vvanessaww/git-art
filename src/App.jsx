@@ -7,7 +7,7 @@ import ContributionCanvas from './components/ContributionCanvas'
 function App() {
   const [username, setUsername] = useState('')
   const [contributionData, setContributionData] = useState(null)
-  const [selectedStyle, setSelectedStyle] = useState('rainbow')
+  const [selectedStyle, setSelectedStyle] = useState('default')
   const [customText, setCustomText] = useState('')
   const [userName, setUserName] = useState('')
   const [showStats, setShowStats] = useState(true)

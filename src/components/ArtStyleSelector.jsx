@@ -10,14 +10,14 @@ function ArtStyleSelector({ selectedStyle, setSelectedStyle, customText, setCust
     }
   }, [selectedStyle, userName, customText, setCustomText])
   const styles = [
+    { id: 'default', name: 'GitHub Classic', description: 'The classic GitHub contribution graph' },
     { id: 'rainbow', name: 'Rainbow', description: 'Colorful gradient effect' },
     { id: 'tetris', name: 'Tetris', description: 'Blocks stacking based on activity' },
     { id: 'audio', name: 'Audio Visualizer', description: 'Equalizer bars dancing to commits' },
     { id: 'pacman', name: 'Pac-Man', description: 'Classic arcade maze with ghosts' },
     { id: 'text', name: 'Custom Text', description: 'Shape contributions into text' },
     { id: 'name', name: 'Your Name', description: 'Spell out your name in commits' },
-    { id: 'heatmap', name: 'Heatmap', description: 'Intensity-based color mapping' },
-    { id: 'pixel', name: 'Pixel Art', description: 'Retro pixel-style rendering' }
+    { id: 'heatmap', name: 'Heatmap', description: 'Intensity-based color mapping' }
   ]
 
   return (

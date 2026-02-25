@@ -24,7 +24,7 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
     const bottomPadding = cellSize + gap * 2 // Extra padding for bottom edge
     
     // Styles that need day labels (not Tetris, Audio, or Pacman)
-    const dayLabelStyles = ['rainbow', 'heatmap', 'pixel', 'text', 'name']
+    const dayLabelStyles = ['default', 'rainbow', 'heatmap', 'text', 'name']
     const needsDayLabels = dayLabelStyles.includes(style)
     
     // Add padding to prevent cutoff on all edges
@@ -50,7 +50,7 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
     }
     
     // Render based on selected style first
-    const gridStyles = ['rainbow', 'heatmap', 'pixel', 'text', 'name', 'tetris', 'audio', 'pacman']
+    const gridStyles = ['default', 'rainbow', 'heatmap', 'text', 'name', 'tetris', 'audio', 'pacman']
 
     // Render based on selected style
     switch (style) {

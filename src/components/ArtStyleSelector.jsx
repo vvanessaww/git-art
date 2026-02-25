@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import './ArtStyleSelector.css'
 
-function ArtStyleSelector({ selectedStyle, setSelectedStyle, customText, setCustomText, userName }) {
+function ArtStyleSelector({ selectedStyle, setSelectedStyle, customText, setCustomText, userName, showStats, setShowStats }) {
   // Auto-populate name when "name" style is selected (first name only)
   useEffect(() => {
     if (selectedStyle === 'name' && userName && !customText) {
@@ -48,6 +48,17 @@ function ArtStyleSelector({ selectedStyle, setSelectedStyle, customText, setCust
           )}
         </div>
       )}
+      
+      <div className="stats-toggle">
+        <label>
+          <input
+            type="checkbox"
+            checked={showStats}
+            onChange={(e) => setShowStats(e.target.checked)}
+          />
+          <span>Show username and commit count</span>
+        </label>
+      </div>
     </div>
   )
 }

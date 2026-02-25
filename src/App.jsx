@@ -10,6 +10,7 @@ function App() {
   const [selectedStyle, setSelectedStyle] = useState('rainbow')
   const [customText, setCustomText] = useState('')
   const [userName, setUserName] = useState('')
+  const [showStats, setShowStats] = useState(true)
 
   return (
     <div className="App">
@@ -34,12 +35,16 @@ function App() {
               customText={customText}
               setCustomText={setCustomText}
               userName={userName}
+              showStats={showStats}
+              setShowStats={setShowStats}
             />
             
             <ContributionCanvas 
               contributionData={contributionData}
               style={selectedStyle}
               customText={customText}
+              username={username}
+              showStats={showStats}
             />
           </>
         )}

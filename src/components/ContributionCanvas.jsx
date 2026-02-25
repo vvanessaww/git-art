@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import './ContributionCanvas.css'
 import { getLetterPattern } from '../utils/letterPatterns'
 
-function ContributionCanvas({ contributionData, style, customText }) {
+function ContributionCanvas({ contributionData, style, customText, username, showStats }) {
   const canvasRef = useRef(null)
 
   useEffect(() => {
@@ -17,8 +17,9 @@ function ContributionCanvas({ contributionData, style, customText }) {
     const gap = isMobile ? 1 : 2
     const weeks = Math.ceil(contributionData.length / 7)
     const days = 7
+    const bottomPadding = showStats ? 40 : 0
     canvas.width = weeks * (cellSize + gap)
-    canvas.height = days * (cellSize + gap)
+    canvas.height = days * (cellSize + gap) + bottomPadding
 
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -50,7 +51,22 @@ function ContributionCanvas({ contributionData, style, customText }) {
       default:
         renderDefault(ctx, contributionData, cellSize, gap, canvas)
     }
-  }, [contributionData, style, customText])
+    
+    // Render stats text at the bottom if enabled
+    if (showStats && username) {
+      const totalCommits = contributionData.reduce((sum, day) => sum + day.count, 0)
+      const graphHeight = days * (cellSize + gap)
+      
+      ctx.fillStyle = '#00ff00'
+      ctx.font = 'bold 14px "Courier New", monospace'
+      ctx.textAlign = 'center'
+      ctx.fillText(
+        `@${username} • ${totalCommits} commits in 2026`,
+        canvas.width / 2,
+        graphHeight + 25
+      )
+    }
+  }, [contributionData, style, customText, username, showStats])
 
   const renderDefault = (ctx, data, cellSize, gap, canvas) => {
     const colors = ['#001100', '#003300', '#00aa00', '#00dd00', '#00ff00']

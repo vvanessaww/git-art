@@ -72,6 +72,9 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
       case 'audio':
         renderAudioVisualizer(ctx, contributionData, cellSize, gap, canvas)
         break
+      case 'pacman':
+        renderPacman(ctx, contributionData, cellSize, gap, canvas)
+        break
       case 'text':
       case 'name':
         renderText(ctx, contributionData, cellSize, gap, customText || 'HELLO', canvas)
@@ -253,6 +256,107 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
         ctx.fill()
         ctx.shadowBlur = 0
       }
+    })
+  }
+
+  const renderPacman = (ctx, data, cellSize, gap, canvas) => {
+    const topOffset = 20 // Offset for month labels
+    const leftOffset = 30 // Offset for day labels
+    
+    // Draw contribution grid in white/gray (pellets)
+    data.forEach((day, index) => {
+      const x = Math.floor(index / 7) * (cellSize + gap) + leftOffset + cellSize / 2
+      const y = (index % 7) * (cellSize + gap) + topOffset + cellSize / 2
+      
+      // White/gray pellets based on contribution level
+      const colors = ['#1a1a1a', '#444444', '#888888', '#cccccc', '#ffffff']
+      ctx.fillStyle = colors[day.level] || colors[0]
+      
+      // Draw small circles for pellets
+      const pelletSize = cellSize * 0.4
+      ctx.beginPath()
+      ctx.arc(x, y, pelletSize / 2, 0, Math.PI * 2)
+      ctx.fill()
+    })
+    
+    // Draw blue maze bars (horizontal and vertical lines)
+    ctx.strokeStyle = '#2121de'
+    ctx.lineWidth = 3
+    ctx.lineCap = 'round'
+    
+    const weeks = Math.ceil(data.length / 7)
+    
+    // Horizontal maze lines
+    for (let i = 0; i < 7; i += 2) {
+      const y = i * (cellSize + gap) + topOffset + cellSize / 2
+      ctx.beginPath()
+      ctx.moveTo(leftOffset, y)
+      ctx.lineTo(weeks * (cellSize + gap) + leftOffset, y)
+      ctx.stroke()
+    }
+    
+    // Vertical maze lines
+    for (let i = 0; i < weeks; i += 5) {
+      const x = i * (cellSize + gap) + leftOffset + cellSize / 2
+      ctx.beginPath()
+      ctx.moveTo(x, topOffset)
+      ctx.lineTo(x, 7 * (cellSize + gap) + topOffset)
+      ctx.stroke()
+    }
+    
+    // Draw Pac-Man
+    const pacmanX = (weeks / 4) * (cellSize + gap) + leftOffset + cellSize / 2
+    const pacmanY = 3.5 * (cellSize + gap) + topOffset + cellSize / 2
+    const pacmanSize = cellSize * 2.5
+    
+    ctx.fillStyle = '#ffff00'
+    ctx.beginPath()
+    ctx.arc(pacmanX, pacmanY, pacmanSize / 2, 0.2 * Math.PI, 1.8 * Math.PI)
+    ctx.lineTo(pacmanX, pacmanY)
+    ctx.fill()
+    
+    // Draw ghosts
+    const ghostSize = cellSize * 2
+    const ghosts = [
+      { x: (weeks / 2) * (cellSize + gap) + leftOffset, y: 1.5 * (cellSize + gap) + topOffset, color: '#ff0000' }, // Blinky (red)
+      { x: (weeks * 0.6) * (cellSize + gap) + leftOffset, y: 3.5 * (cellSize + gap) + topOffset, color: '#ffb8ff' }, // Pinky
+      { x: (weeks * 0.7) * (cellSize + gap) + leftOffset, y: 5.5 * (cellSize + gap) + topOffset, color: '#00ffff' }, // Inky (cyan)
+    ]
+    
+    ghosts.forEach(ghost => {
+      // Ghost body (semicircle + rectangle)
+      ctx.fillStyle = ghost.color
+      ctx.beginPath()
+      ctx.arc(ghost.x, ghost.y, ghostSize / 2, Math.PI, 0, false)
+      ctx.lineTo(ghost.x + ghostSize / 2, ghost.y + ghostSize / 2)
+      
+      // Wavy bottom
+      const waveWidth = ghostSize / 3
+      for (let i = 0; i < 3; i++) {
+        const waveX = ghost.x + ghostSize / 2 - i * waveWidth
+        ctx.lineTo(waveX, ghost.y + ghostSize / 2)
+        ctx.lineTo(waveX - waveWidth / 2, ghost.y + ghostSize / 3)
+      }
+      
+      ctx.lineTo(ghost.x - ghostSize / 2, ghost.y + ghostSize / 2)
+      ctx.closePath()
+      ctx.fill()
+      
+      // Ghost eyes
+      ctx.fillStyle = '#ffffff'
+      const eyeSize = ghostSize * 0.15
+      ctx.beginPath()
+      ctx.arc(ghost.x - ghostSize * 0.15, ghost.y, eyeSize, 0, Math.PI * 2)
+      ctx.arc(ghost.x + ghostSize * 0.15, ghost.y, eyeSize, 0, Math.PI * 2)
+      ctx.fill()
+      
+      // Pupils
+      ctx.fillStyle = '#0000ff'
+      const pupilSize = eyeSize * 0.6
+      ctx.beginPath()
+      ctx.arc(ghost.x - ghostSize * 0.15, ghost.y, pupilSize, 0, Math.PI * 2)
+      ctx.arc(ghost.x + ghostSize * 0.15, ghost.y, pupilSize, 0, Math.PI * 2)
+      ctx.fill()
     })
   }
 

@@ -22,6 +22,25 @@
   margin-bottom: 1.5rem;
 }
 
+@media (max-width: 768px) {
+  .styles-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.75rem;
+  }
+  
+  .style-card {
+    padding: 1rem;
+  }
+  
+  .style-card h3 {
+    font-size: 1rem;
+  }
+  
+  .style-card p {
+    font-size: 0.8rem;
+  }
+}
+
 .style-card {
   padding: 1.5rem;
   border: 2px solid #00ff00;

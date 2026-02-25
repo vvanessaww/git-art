@@ -10,11 +10,31 @@
   border-radius: 0;
 }
 
+@media (max-width: 768px) {
+  .contribution-canvas {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  
+  .download-btn {
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+  }
+}
+
 .contribution-canvas canvas {
   border: 2px solid #00ff00;
   border-radius: 0;
   box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
   background: #0a0a0a;
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .contribution-canvas canvas {
+    max-width: calc(100vw - 4rem);
+  }
 }
 
 .download-btn {

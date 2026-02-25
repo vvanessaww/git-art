@@ -39,6 +39,12 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
       case 'spiral':
         renderSpiral(ctx, contributionData, cellSize, gap, canvas)
         break
+      case 'tetris':
+        renderTetris(ctx, contributionData, cellSize, gap, canvas)
+        break
+      case 'audio':
+        renderAudioVisualizer(ctx, contributionData, cellSize, gap, canvas)
+        break
       case 'text':
       case 'name':
         renderText(ctx, contributionData, cellSize, gap, customText || 'HELLO', canvas)
@@ -311,6 +317,105 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
       ctx.lineWidth = 0.5
       ctx.strokeRect(x, y, cellSize, cellSize)
     })
+  }
+
+  const renderTetris = (ctx, data, cellSize, gap, canvas) => {
+    // Clear to black background
+    ctx.fillStyle = '#000000'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    
+    // Tetris block colors (classic Tetris palette)
+    const tetrisColors = [
+      '#000000', // Empty (black)
+      '#00f0f0', // Cyan (I-piece)
+      '#f0f000', // Yellow (O-piece)
+      '#a000f0', // Purple (T-piece)
+      '#00f000', // Green (S-piece)
+      '#f00000', // Red (Z-piece)
+      '#0000f0', // Blue (J-piece)
+      '#f0a000'  // Orange (L-piece)
+    ]
+    
+    // Group data by weeks for stacking
+    const weeks = Math.ceil(data.length / 7)
+    for (let week = 0; week < weeks; week++) {
+      const weekData = data.slice(week * 7, (week + 1) * 7)
+      const weekTotal = weekData.reduce((sum, day) => sum + day.level, 0)
+      
+      // Calculate stack height based on week's total activity
+      const maxHeight = canvas.height - gap * 2
+      const stackHeight = (weekTotal / (7 * 4)) * maxHeight // Normalize
+      
+      // Draw stacked blocks from bottom up
+      const x = week * (cellSize + gap)
+      const numBlocks = Math.ceil(stackHeight / cellSize)
+      
+      for (let block = 0; block < numBlocks; block++) {
+        const y = canvas.height - (block + 1) * cellSize - gap
+        const colorIndex = (block % 7) + 1 // Cycle through Tetris colors
+        
+        // Draw Tetris block with border
+        ctx.fillStyle = tetrisColors[colorIndex]
+        ctx.fillRect(x, y, cellSize, cellSize)
+        
+        // Add block border for Tetris look
+        ctx.strokeStyle = '#000000'
+        ctx.lineWidth = 2
+        ctx.strokeRect(x, y, cellSize, cellSize)
+        
+        // Add highlight for 3D effect
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)'
+        ctx.lineWidth = 1
+        ctx.strokeRect(x + 1, y + 1, cellSize - 2, cellSize - 2)
+      }
+    }
+  }
+
+  const renderAudioVisualizer = (ctx, data, cellSize, gap, canvas) => {
+    // Clear to dark background
+    ctx.fillStyle = '#0a0a0a'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    
+    // Group data by weeks
+    const weeks = Math.ceil(data.length / 7)
+    const barWidth = Math.floor(canvas.width / weeks) - gap
+    
+    weeks.forEach((_, weekIndex) => {
+      const weekData = data.slice(weekIndex * 7, (weekIndex + 1) * 7)
+      const weekAvg = weekData.reduce((sum, day) => sum + day.level, 0) / 7
+      
+      // Calculate bar height
+      const maxHeight = canvas.height - 40
+      const barHeight = (weekAvg / 4) * maxHeight
+      
+      const x = weekIndex * (barWidth + gap)
+      const y = canvas.height - barHeight - 20
+      
+      // Create gradient for each bar (bottom to top)
+      const gradient = ctx.createLinearGradient(x, canvas.height, x, y)
+      gradient.addColorStop(0, '#ff0080') // Pink at bottom
+      gradient.addColorStop(0.5, '#00d4ff') // Cyan in middle
+      gradient.addColorStop(1, '#00ff88') // Green at top
+      
+      // Draw bar with glow
+      ctx.shadowColor = weekAvg > 2 ? '#00ff88' : '#00d4ff'
+      ctx.shadowBlur = weekAvg * 5
+      ctx.fillStyle = gradient
+      ctx.fillRect(x, y, barWidth, barHeight)
+      
+      // Add reflection at bottom
+      ctx.shadowBlur = 0
+      ctx.fillStyle = `rgba(0, 212, 255, ${0.2 * (weekAvg / 4)})`
+      ctx.fillRect(x, canvas.height - 15, barWidth, 10)
+      
+      // Add bright cap on top for high activity
+      if (weekAvg >= 3) {
+        ctx.fillStyle = '#ffffff'
+        ctx.fillRect(x, y - 3, barWidth, 3)
+      }
+    })
+    
+    ctx.shadowBlur = 0
   }
 
   const renderPixel = (ctx, data, cellSize, gap, canvas) => {

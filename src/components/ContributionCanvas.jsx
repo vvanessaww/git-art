@@ -126,7 +126,7 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
         graphHeight + 25
       )
     }
-  }, [contributionData, style, customText, username, showStats])
+  }, [contributionData, style, customText, showStats])
 
   const renderDefault = (ctx, data, cellSize, gap, canvas) => {
     const colors = ['#001100', '#003300', '#00aa00', '#00dd00', '#00ff00']

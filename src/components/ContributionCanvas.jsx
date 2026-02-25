@@ -261,7 +261,7 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
 
   const renderPacman = (ctx, data, cellSize, gap, canvas) => {
     const topOffset = 20 // Offset for month labels
-    const leftOffset = 30 // Offset for day labels
+    const leftOffset = 0 // No day labels for Pac-Man
     
     // Draw contribution grid in white/gray (pellets)
     data.forEach((day, index) => {

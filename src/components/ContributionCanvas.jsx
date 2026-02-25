@@ -72,15 +72,17 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
       ctx.textAlign = 'left'
       
       const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      const currentYear = new Date().getFullYear()
       let currentMonth = -1
       
       contributionData.forEach((day, index) => {
         const weekIndex = Math.floor(index / 7)
         const date = new Date(day.date)
         const month = date.getMonth()
+        const year = date.getFullYear()
         
-        // Only draw label when month changes and it's the start of a week
-        if (month !== currentMonth && index % 7 === 0) {
+        // Only draw label when month changes, it's the start of a week, and it's from current year
+        if (month !== currentMonth && index % 7 === 0 && year === currentYear) {
           currentMonth = month
           const x = weekIndex * (cellSize + gap)
           ctx.fillText(monthNames[month], x, 14)

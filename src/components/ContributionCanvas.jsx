@@ -18,8 +18,9 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
     const weeks = Math.ceil(contributionData.length / 7)
     const days = 7
     const bottomPadding = showStats ? 40 : 0
-    canvas.width = weeks * (cellSize + gap)
-    canvas.height = days * (cellSize + gap) + bottomPadding
+    // Add padding to prevent right side cutoff (account for last cell + small margin)
+    canvas.width = weeks * (cellSize + gap) + gap
+    canvas.height = days * (cellSize + gap) + gap + bottomPadding
 
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height)

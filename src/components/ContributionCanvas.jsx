@@ -17,12 +17,12 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
     const gap = isMobile ? 1 : 2
     const weeks = Math.ceil(contributionData.length / 7)
     const days = 7
-    const bottomPadding = showStats ? 40 : 0
+    const statsPadding = showStats ? 40 : 0
     const rightPadding = cellSize + gap * 2 // Extra padding for right edge
-    const topBottomPadding = gap * 2
-    // Add padding to prevent right/bottom side cutoff
+    const bottomPadding = cellSize + gap * 2 // Extra padding for bottom edge
+    // Add padding to prevent cutoff on all edges
     canvas.width = weeks * (cellSize + gap) + rightPadding
-    canvas.height = days * (cellSize + gap) + topBottomPadding + bottomPadding
+    canvas.height = days * (cellSize + gap) + bottomPadding + statsPadding
 
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height)

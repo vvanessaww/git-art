@@ -49,6 +49,23 @@ function App() {
           </>
         )}
       </main>
+      
+      <footer className="app-footer">
+        <div className="footer-links">
+          <a href="https://github.com/vvanessaww/git-art" target="_blank" rel="noopener noreferrer">
+            [ about this project ]
+          </a>
+          <span className="footer-divider">•</span>
+          <a href="https://github.com/vvanessaww" target="_blank" rel="noopener noreferrer">
+            [ github ]
+          </a>
+          <span className="footer-divider">•</span>
+          <a href="https://linkedin.com/in/vvanessaww" target="_blank" rel="noopener noreferrer">
+            [ linkedin ]
+          </a>
+        </div>
+        <p className="footer-credit">made with 🖤 by vanessa</p>
+      </footer>
     </div>
   )
 }

@@ -11,10 +11,10 @@ function ContributionCanvas({ contributionData, style, customText }) {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
     
-    // Set canvas size
+    // Set canvas size based on actual data
     const cellSize = 12
     const gap = 2
-    const weeks = 53
+    const weeks = Math.ceil(contributionData.length / 7)
     const days = 7
     canvas.width = weeks * (cellSize + gap)
     canvas.height = days * (cellSize + gap)
@@ -71,8 +71,10 @@ function ContributionCanvas({ contributionData, style, customText }) {
       const x = Math.floor(index / 7) * (cellSize + gap)
       const y = (index % 7) * (cellSize + gap)
       const hue = (index / data.length) * 360
-      const lightness = 50 + (day.level * 10)
-      ctx.fillStyle = `hsl(${hue}, 70%, ${lightness}%)`
+      // Mix rainbow hue with contribution level for brightness
+      const lightness = day.level === 0 ? 10 : 30 + (day.level * 15)
+      const saturation = day.level === 0 ? 20 : 70 + (day.level * 5)
+      ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`
       ctx.fillRect(x, y, cellSize, cellSize)
     })
   }
@@ -81,8 +83,10 @@ function ContributionCanvas({ contributionData, style, customText }) {
     data.forEach((day, index) => {
       const x = Math.floor(index / 7) * (cellSize + gap)
       const y = (index % 7) * (cellSize + gap)
-      const wave = Math.sin(index / 10) * 30 + 50
-      ctx.fillStyle = `hsl(200, 70%, ${wave + day.level * 10}%)`
+      // Create wave pattern that respects contribution levels
+      const wave = Math.sin(index / 15) * 20 + 40
+      const brightness = day.level === 0 ? 10 : wave + (day.level * 10)
+      ctx.fillStyle = `hsl(160, 80%, ${brightness}%)`
       ctx.fillRect(x, y, cellSize, cellSize)
     })
   }

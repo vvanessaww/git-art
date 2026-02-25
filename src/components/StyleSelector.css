@@ -1,0 +1,50 @@
+.style-selector {
+  max-width: 1200px;
+  margin: 0 auto 3rem;
+}
+
+.style-selector h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.style-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.style-card {
+  background: #161b22;
+  border: 2px solid #30363d;
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: left;
+}
+
+.style-card:hover {
+  border-color: #39d353;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(57, 211, 83, 0.2);
+}
+
+.style-card.selected {
+  border-color: #39d353;
+  background: linear-gradient(135deg, rgba(57, 211, 83, 0.1) 0%, rgba(38, 166, 65, 0.05) 100%);
+  box-shadow: 0 0 0 3px rgba(57, 211, 83, 0.1);
+}
+
+.style-name {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #c9d1d9;
+}
+
+.style-description {
+  font-size: 0.95rem;
+  color: #8b949e;
+}

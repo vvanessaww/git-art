@@ -1,0 +1,32 @@
+.contribution-art {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.contribution-art canvas {
+  border: 2px solid #30363d;
+  border-radius: 12px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.download-btn {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: #238636;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.download-btn:hover {
+  background: #2ea043;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(35, 134, 54, 0.3);
+}

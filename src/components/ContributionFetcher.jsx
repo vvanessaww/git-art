@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './ContributionFetcher.css'
 
-function ContributionFetcher({ username, setUsername, setContributionData }) {
+function ContributionFetcher({ username, setUsername, setContributionData, setUserName }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
@@ -15,14 +15,25 @@ function ContributionFetcher({ username, setUsername, setContributionData }) {
     setError(null)
 
     try {
-      // Use GitHub's events API to get contribution data
-      const response = await fetch(`https://api.github.com/users/${username}/events/public?per_page=100`)
+      // Fetch user profile data
+      const profileResponse = await fetch(`https://api.github.com/users/${username}`)
       
-      if (!response.ok) {
-        throw new Error(response.status === 404 ? 'User not found' : 'Failed to fetch data')
+      if (!profileResponse.ok) {
+        throw new Error(profileResponse.status === 404 ? 'User not found' : 'Failed to fetch data')
+      }
+      
+      const profile = await profileResponse.json()
+      const name = profile.name || username
+      setUserName(name)
+      
+      // Use GitHub's events API to get contribution data
+      const eventsResponse = await fetch(`https://api.github.com/users/${username}/events/public?per_page=100`)
+      
+      if (!eventsResponse.ok) {
+        throw new Error('Failed to fetch contribution data')
       }
 
-      const events = await response.json()
+      const events = await eventsResponse.json()
       
       // Generate a year's worth of contribution data based on events
       const contributions = []

@@ -9,6 +9,7 @@ function App() {
   const [contributionData, setContributionData] = useState(null)
   const [selectedStyle, setSelectedStyle] = useState('default')
   const [customText, setCustomText] = useState('')
+  const [userName, setUserName] = useState('')
 
   return (
     <div className="App">
@@ -22,6 +23,7 @@ function App() {
           username={username}
           setUsername={setUsername}
           setContributionData={setContributionData}
+          setUserName={setUserName}
         />
         
         {contributionData && (
@@ -31,6 +33,7 @@ function App() {
               setSelectedStyle={setSelectedStyle}
               customText={customText}
               setCustomText={setCustomText}
+              userName={userName}
             />
             
             <ContributionCanvas 

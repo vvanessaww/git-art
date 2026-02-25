@@ -1,6 +1,13 @@
+import { useEffect } from 'react'
 import './ArtStyleSelector.css'
 
-function ArtStyleSelector({ selectedStyle, setSelectedStyle, customText, setCustomText }) {
+function ArtStyleSelector({ selectedStyle, setSelectedStyle, customText, setCustomText, userName }) {
+  // Auto-populate name when "name" style is selected
+  useEffect(() => {
+    if (selectedStyle === 'name' && userName && !customText) {
+      setCustomText(userName.toUpperCase())
+    }
+  }, [selectedStyle, userName, customText, setCustomText])
   const styles = [
     { id: 'default', name: 'Classic GitHub', description: 'Traditional contribution graph' },
     { id: 'rainbow', name: 'Rainbow', description: 'Colorful gradient effect' },
@@ -32,11 +39,14 @@ function ArtStyleSelector({ selectedStyle, setSelectedStyle, customText, setCust
         <div className="custom-text-input">
           <input
             type="text"
-            placeholder={selectedStyle === 'name' ? 'Enter your name' : 'Enter custom text'}
+            placeholder={selectedStyle === 'name' ? userName || 'Enter your name' : 'Enter custom text'}
             value={customText}
             onChange={(e) => setCustomText(e.target.value.toUpperCase())}
             maxLength={20}
           />
+          {selectedStyle === 'name' && userName && (
+            <p className="auto-detected">Auto-detected: {userName}</p>
+          )}
         </div>
       )}
     </div>

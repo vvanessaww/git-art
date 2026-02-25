@@ -52,12 +52,17 @@ function ContributionCanvas({ contributionData, style, customText }) {
   }, [contributionData, style, customText])
 
   const renderDefault = (ctx, data, cellSize, gap) => {
-    const colors = ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39']
+    const colors = ['#001100', '#003300', '#00aa00', '#00dd00', '#00ff00']
     data.forEach((day, index) => {
       const x = Math.floor(index / 7) * (cellSize + gap)
       const y = (index % 7) * (cellSize + gap)
       ctx.fillStyle = colors[day.level] || colors[0]
       ctx.fillRect(x, y, cellSize, cellSize)
+      
+      // Add terminal-style border
+      ctx.strokeStyle = '#00ff0033'
+      ctx.lineWidth = 0.5
+      ctx.strokeRect(x, y, cellSize, cellSize)
     })
   }
 
@@ -83,16 +88,33 @@ function ContributionCanvas({ contributionData, style, customText }) {
   }
 
   const renderSpiral = (ctx, data, cellSize, gap) => {
+    // Clear background
+    ctx.fillStyle = '#000000'
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    
     const centerX = canvas.width / 2
     const centerY = canvas.height / 2
+    const maxRadius = Math.min(centerX, centerY) * 0.9
+    
     data.forEach((day, index) => {
-      const angle = (index / data.length) * Math.PI * 4
-      const radius = (index / data.length) * Math.min(centerX, centerY)
+      const angle = (index / data.length) * Math.PI * 8 // More spirals
+      const radius = (index / data.length) * maxRadius
       const x = centerX + Math.cos(angle) * radius
       const y = centerY + Math.sin(angle) * radius
       const intensity = day.level / 4
-      ctx.fillStyle = `rgba(33, 110, 57, ${0.2 + intensity * 0.8})`
+      
+      // Terminal green with glow
+      const alpha = 0.3 + intensity * 0.7
+      ctx.fillStyle = `rgba(0, 255, 0, ${alpha})`
       ctx.fillRect(x - cellSize / 2, y - cellSize / 2, cellSize, cellSize)
+      
+      // Add glow for active cells
+      if (day.level > 0) {
+        ctx.shadowColor = '#00ff00'
+        ctx.shadowBlur = 5
+        ctx.fillRect(x - cellSize / 2, y - cellSize / 2, cellSize, cellSize)
+        ctx.shadowBlur = 0
+      }
     })
   }
 
@@ -101,7 +123,7 @@ function ContributionCanvas({ contributionData, style, customText }) {
       text = 'HELLO'
     }
     
-    const colors = ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39']
+    const colors = ['#001100', '#003300', '#00aa00', '#00dd00', '#00ff00']
     
     // Get letter patterns
     const letters = text.toUpperCase().split('').map(char => getLetterPattern(char))
@@ -114,24 +136,34 @@ function ContributionCanvas({ contributionData, style, customText }) {
     const startX = Math.floor((53 - totalWidth) / 2)
     const startY = Math.floor((7 - letterHeight) / 2)
     
-    // Draw letters using contribution blocks
+    // First fill background with all contribution data
+    data.forEach((day, index) => {
+      const x = Math.floor(index / 7) * (cellSize + gap)
+      const y = (index % 7) * (cellSize + gap)
+      ctx.fillStyle = colors[0]
+      ctx.fillRect(x, y, cellSize, cellSize)
+    })
+    
+    // Then draw letters on top
     let currentX = startX
     letters.forEach(letter => {
       for (let row = 0; row < letterHeight; row++) {
         for (let col = 0; col < letterWidth; col++) {
-          const x = (currentX + col) * (cellSize + gap)
-          const y = (startY + row) * (cellSize + gap)
-          
           if (letter[row][col] === 1) {
+            const x = (currentX + col) * (cellSize + gap)
+            const y = (startY + row) * (cellSize + gap)
+            
             // Use contribution data to determine color intensity
             const dataIndex = ((currentX + col) * 7 + (startY + row)) % data.length
-            const level = data[dataIndex]?.level || Math.floor(Math.random() * 5)
-            ctx.fillStyle = colors[level]
-          } else {
-            ctx.fillStyle = colors[0]
+            const level = data[dataIndex]?.level || 0
+            ctx.fillStyle = level > 0 ? colors[level] : colors[3]
+            ctx.fillRect(x, y, cellSize, cellSize)
+            
+            // Add glow effect for letters
+            ctx.strokeStyle = '#00ff0066'
+            ctx.lineWidth = 1
+            ctx.strokeRect(x, y, cellSize, cellSize)
           }
-          
-          ctx.fillRect(x, y, cellSize, cellSize)
         }
       }
       currentX += letterWidth + letterSpacing
@@ -139,12 +171,13 @@ function ContributionCanvas({ contributionData, style, customText }) {
   }
 
   const renderHeatmap = (ctx, data, cellSize, gap) => {
-    const maxLevel = Math.max(...data.map(d => d.level))
+    const maxLevel = Math.max(...data.map(d => d.level), 1)
     data.forEach((day, index) => {
       const x = Math.floor(index / 7) * (cellSize + gap)
       const y = (index % 7) * (cellSize + gap)
       const intensity = day.level / maxLevel
-      ctx.fillStyle = `rgb(${255 * intensity}, ${100 - 80 * intensity}, ${50})`
+      // Terminal green heatmap
+      ctx.fillStyle = `rgb(0, ${Math.floor(255 * intensity)}, 0)`
       ctx.fillRect(x, y, cellSize, cellSize)
     })
   }
@@ -153,10 +186,14 @@ function ContributionCanvas({ contributionData, style, customText }) {
     data.forEach((day, index) => {
       const x = Math.floor(index / 7) * (cellSize + gap)
       const y = (index % 7) * (cellSize + gap)
-      // Pixelated effect with sharp edges
-      const colors = ['#000000', '#555555', '#888888', '#bbbbbb', '#ffffff']
+      // Pixelated effect with green terminal colors
+      const colors = ['#001100', '#003300', '#00aa00', '#00dd00', '#00ff00']
       ctx.fillStyle = colors[day.level] || colors[0]
       ctx.fillRect(x, y, cellSize, cellSize)
+      // Sharp pixel borders
+      ctx.strokeStyle = '#000000'
+      ctx.lineWidth = 1
+      ctx.strokeRect(x, y, cellSize, cellSize)
     })
   }
 

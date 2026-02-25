@@ -5,7 +5,14 @@
 .style-selector h2 {
   text-align: center;
   margin-bottom: 1.5rem;
-  color: #2d3748;
+  color: #00ff00;
+  font-family: 'Courier New', Courier, monospace;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.style-selector h2::before {
+  content: '>> ';
 }
 
 .styles-grid {
@@ -17,28 +24,38 @@
 
 .style-card {
   padding: 1.5rem;
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
+  border: 2px solid #00ff00;
+  border-radius: 0;
   cursor: pointer;
   transition: all 0.3s;
-  background: white;
+  background: #0a0a0a;
+  color: #00ff00;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .style-card:hover {
-  border-color: #667eea;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+  background: #001100;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
 }
 
 .style-card.selected {
-  border-color: #667eea;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: #00ff00;
+  color: #000;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
 }
 
 .style-card h3 {
   margin: 0 0 0.5rem 0;
   font-size: 1.1rem;
+  text-transform: uppercase;
+}
+
+.style-card h3::before {
+  content: '[ ';
+}
+
+.style-card h3::after {
+  content: ' ]';
 }
 
 .style-card p {
@@ -57,19 +74,22 @@
   padding: 1rem;
   font-size: 1.2rem;
   text-align: center;
-  border: 2px solid #667eea;
-  border-radius: 10px;
+  border: 2px solid #00ff00;
+  border-radius: 0;
   font-weight: 600;
+  font-family: 'Courier New', Courier, monospace;
+  background: #000;
+  color: #00ff00;
 }
 
 .custom-text-input input:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 }
 
 .custom-text-input .auto-detected {
   margin-top: 0.5rem;
   font-size: 0.9rem;
-  color: #667eea;
+  color: #00cc00;
   text-align: center;
 }

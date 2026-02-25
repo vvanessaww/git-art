@@ -1,31 +1,41 @@
 .App {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #0a0a0a;
   padding: 2rem;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 header {
   text-align: center;
-  color: white;
+  color: #00ff00;
   margin-bottom: 3rem;
+  text-shadow: 0 0 10px #00ff00;
 }
 
 header h1 {
   font-size: 3rem;
   margin-bottom: 0.5rem;
   font-weight: 700;
+  letter-spacing: 2px;
+}
+
+header h1::before {
+  content: '> ';
+  color: #00ff00;
 }
 
 header p {
   font-size: 1.2rem;
-  opacity: 0.9;
+  opacity: 0.8;
+  color: #00cc00;
 }
 
 main {
   max-width: 1200px;
   margin: 0 auto;
-  background: white;
-  border-radius: 20px;
+  background: #1a1a1a;
+  border: 2px solid #00ff00;
+  border-radius: 4px;
   padding: 2rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
 }

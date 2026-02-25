@@ -15,7 +15,7 @@ function ContributionFetcher({ username, setUsername, setContributionData, setUs
     setError(null)
 
     try {
-      // Fetch user profile data
+      // Fetch user profile data for name
       const profileResponse = await fetch(`https://api.github.com/users/${username}`)
       
       if (!profileResponse.ok) {
@@ -26,33 +26,41 @@ function ContributionFetcher({ username, setUsername, setContributionData, setUs
       const name = profile.name || username
       setUserName(name)
       
-      // Fetch actual contribution graph data using CORS proxy
-      const corsProxy = 'https://corsproxy.io/?'
-      const contributionsUrl = `https://github.com/users/${username}/contributions`
+      // Use github-contributions-api to get actual contribution calendar data
+      const year = new Date().getFullYear()
+      const contribResponse = await fetch(
+        `https://github-contributions-api.jogruber.de/v4/${username}?y=${year}`
+      )
       
-      const contribResponse = await fetch(corsProxy + encodeURIComponent(contributionsUrl))
-      const html = await contribResponse.text()
-      
-      // Parse the SVG contribution graph
-      const parser = new DOMParser()
-      const doc = parser.parseFromString(html, 'text/html')
-      const rects = doc.querySelectorAll('rect.ContributionCalendar-day')
-      
-      if (rects.length === 0) {
-        throw new Error('No contribution data found')
+      if (!contribResponse.ok) {
+        throw new Error('Failed to fetch contribution data')
       }
       
-      const contributions = Array.from(rects).map(rect => {
-        const date = rect.getAttribute('data-date')
-        const level = parseInt(rect.getAttribute('data-level')) || 0
-        const count = parseInt(rect.getAttribute('data-count') || rect.textContent) || 0
-        
-        return {
-          date,
-          count,
-          level
+      const contribData = await contribResponse.json()
+      
+      // Parse contribution data
+      const contributions = []
+      
+      contribData.contributions.forEach(day => {
+        // Calculate level (0-4) based on contribution count
+        let level = 0
+        if (day.count > 0) {
+          if (day.count >= 20) level = 4
+          else if (day.count >= 10) level = 3
+          else if (day.count >= 5) level = 2
+          else level = 1
         }
+        
+        contributions.push({
+          date: day.date,
+          count: day.count,
+          level: level
+        })
       })
+      
+      if (contributions.length === 0) {
+        throw new Error('No contribution data found')
+      }
 
       setContributionData(contributions)
     } catch (err) {

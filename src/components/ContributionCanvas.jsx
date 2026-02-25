@@ -25,33 +25,33 @@ function ContributionCanvas({ contributionData, style, customText }) {
     // Render based on selected style
     switch (style) {
       case 'default':
-        renderDefault(ctx, contributionData, cellSize, gap)
+        renderDefault(ctx, contributionData, cellSize, gap, canvas)
         break
       case 'rainbow':
-        renderRainbow(ctx, contributionData, cellSize, gap)
+        renderRainbow(ctx, contributionData, cellSize, gap, canvas)
         break
       case 'wave':
-        renderWave(ctx, contributionData, cellSize, gap)
+        renderWave(ctx, contributionData, cellSize, gap, canvas)
         break
       case 'spiral':
-        renderSpiral(ctx, contributionData, cellSize, gap)
+        renderSpiral(ctx, contributionData, cellSize, gap, canvas)
         break
       case 'text':
       case 'name':
-        renderText(ctx, contributionData, cellSize, gap, customText || 'HELLO')
+        renderText(ctx, contributionData, cellSize, gap, customText || 'HELLO', canvas)
         break
       case 'heatmap':
-        renderHeatmap(ctx, contributionData, cellSize, gap)
+        renderHeatmap(ctx, contributionData, cellSize, gap, canvas)
         break
       case 'pixel':
-        renderPixel(ctx, contributionData, cellSize, gap)
+        renderPixel(ctx, contributionData, cellSize, gap, canvas)
         break
       default:
-        renderDefault(ctx, contributionData, cellSize, gap)
+        renderDefault(ctx, contributionData, cellSize, gap, canvas)
     }
   }, [contributionData, style, customText])
 
-  const renderDefault = (ctx, data, cellSize, gap) => {
+  const renderDefault = (ctx, data, cellSize, gap, canvas) => {
     const colors = ['#001100', '#003300', '#00aa00', '#00dd00', '#00ff00']
     data.forEach((day, index) => {
       const x = Math.floor(index / 7) * (cellSize + gap)
@@ -66,7 +66,7 @@ function ContributionCanvas({ contributionData, style, customText }) {
     })
   }
 
-  const renderRainbow = (ctx, data, cellSize, gap) => {
+  const renderRainbow = (ctx, data, cellSize, gap, canvas) => {
     data.forEach((day, index) => {
       const x = Math.floor(index / 7) * (cellSize + gap)
       const y = (index % 7) * (cellSize + gap)
@@ -77,7 +77,7 @@ function ContributionCanvas({ contributionData, style, customText }) {
     })
   }
 
-  const renderWave = (ctx, data, cellSize, gap) => {
+  const renderWave = (ctx, data, cellSize, gap, canvas) => {
     data.forEach((day, index) => {
       const x = Math.floor(index / 7) * (cellSize + gap)
       const y = (index % 7) * (cellSize + gap)
@@ -87,7 +87,7 @@ function ContributionCanvas({ contributionData, style, customText }) {
     })
   }
 
-  const renderSpiral = (ctx, data, cellSize, gap) => {
+  const renderSpiral = (ctx, data, cellSize, gap, canvas) => {
     // Clear background
     ctx.fillStyle = '#000000'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -118,7 +118,7 @@ function ContributionCanvas({ contributionData, style, customText }) {
     })
   }
 
-  const renderText = (ctx, data, cellSize, gap, text) => {
+  const renderText = (ctx, data, cellSize, gap, text, canvas) => {
     if (!text || text.length === 0) {
       text = 'HELLO'
     }
@@ -170,7 +170,7 @@ function ContributionCanvas({ contributionData, style, customText }) {
     })
   }
 
-  const renderHeatmap = (ctx, data, cellSize, gap) => {
+  const renderHeatmap = (ctx, data, cellSize, gap, canvas) => {
     const maxLevel = Math.max(...data.map(d => d.level), 1)
     data.forEach((day, index) => {
       const x = Math.floor(index / 7) * (cellSize + gap)
@@ -182,7 +182,7 @@ function ContributionCanvas({ contributionData, style, customText }) {
     })
   }
 
-  const renderPixel = (ctx, data, cellSize, gap) => {
+  const renderPixel = (ctx, data, cellSize, gap, canvas) => {
     data.forEach((day, index) => {
       const x = Math.floor(index / 7) * (cellSize + gap)
       const y = (index % 7) * (cellSize + gap)

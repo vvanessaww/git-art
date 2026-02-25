@@ -89,7 +89,7 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
     // Render stats text at the bottom if enabled
     if (showStats && username) {
       const totalCommits = contributionData.reduce((sum, day) => sum + day.count, 0)
-      const graphHeight = days * (cellSize + gap)
+      const graphHeight = days * (cellSize + gap) + topPadding
       
       ctx.fillStyle = '#00ff00'
       ctx.font = 'bold 14px "Courier New", monospace'

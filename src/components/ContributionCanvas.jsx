@@ -145,15 +145,20 @@ function ContributionCanvas({ contributionData, style, customText }) {
     const startX = Math.floor((weeks - totalWidth) / 2)
     const startY = Math.floor((days - letterHeight) / 2)
     
-    // First fill background with all contribution data
+    // First render ALL contribution data (full year of commits)
     data.forEach((day, index) => {
       const x = Math.floor(index / 7) * (cellSize + gap)
       const y = (index % 7) * (cellSize + gap)
-      ctx.fillStyle = colors[0]
+      ctx.fillStyle = colors[day.level] || colors[0]
       ctx.fillRect(x, y, cellSize, cellSize)
+      
+      // Add subtle border
+      ctx.strokeStyle = '#00ff0011'
+      ctx.lineWidth = 0.5
+      ctx.strokeRect(x, y, cellSize, cellSize)
     })
     
-    // Then draw letters on top
+    // Then overlay text pattern in contrasting cyan/white color
     let currentX = startX
     letters.forEach(letter => {
       for (let row = 0; row < letterHeight; row++) {
@@ -162,15 +167,13 @@ function ContributionCanvas({ contributionData, style, customText }) {
             const x = (currentX + col) * (cellSize + gap)
             const y = (startY + row) * (cellSize + gap)
             
-            // Use contribution data to determine color intensity
-            const dataIndex = ((currentX + col) * 7 + (startY + row)) % data.length
-            const level = data[dataIndex]?.level || 0
-            ctx.fillStyle = level > 0 ? colors[level] : colors[3]
+            // Draw text in bright cyan with transparency
+            ctx.fillStyle = 'rgba(0, 255, 255, 0.7)'
             ctx.fillRect(x, y, cellSize, cellSize)
             
-            // Add glow effect for letters
-            ctx.strokeStyle = '#00ff0066'
-            ctx.lineWidth = 1
+            // Add bright border for text
+            ctx.strokeStyle = '#00ffff'
+            ctx.lineWidth = 2
             ctx.strokeRect(x, y, cellSize, cellSize)
           }
         }

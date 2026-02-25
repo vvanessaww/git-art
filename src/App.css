@@ -23,41 +23,6 @@ header h1 {
   margin-bottom: 0.5rem;
   font-weight: 700;
   letter-spacing: 2px;
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
-  white-space: nowrap;
-  width: 0;
-  animation: typing 3s steps(19, end) forwards;
-}
-
-header h1::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 3px;
-  height: 100%;
-  background-color: #00ff00;
-  animation: blink-caret 0.75s step-end 4 forwards;
-}
-
-@keyframes typing {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
-}
-
-@keyframes blink-caret {
-  0%, 100% {
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
 }
 
 @media (max-width: 768px) {

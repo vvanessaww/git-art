@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './App.css'
 import ContributionFetcher from './components/ContributionFetcher'
 import ArtStyleSelector from './components/ArtStyleSelector'
@@ -11,11 +11,23 @@ function App() {
   const [customText, setCustomText] = useState('')
   const [userName, setUserName] = useState('')
   const [showStats, setShowStats] = useState(true)
+  const titleRef = useRef(null)
+
+  useEffect(() => {
+    // Remove cursor after typing animation completes
+    const timer = setTimeout(() => {
+      if (titleRef.current) {
+        titleRef.current.style.borderRight = 'none'
+      }
+    }, 3000) // Match typing animation duration
+
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <div className="App">
       <header>
-        <h1>Git Art Generator</h1>
+        <h1 ref={titleRef}>Git Art Generator</h1>
         <p>Transform your GitHub contribution graph into art</p>
       </header>
       

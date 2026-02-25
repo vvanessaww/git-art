@@ -48,6 +48,9 @@ function ArtStyleSelector({ selectedStyle, setSelectedStyle, customText, setCust
           {selectedStyle === 'name' && userName && (
             <p className="auto-detected">Auto-detected: {userName.split(' ')[0]}</p>
           )}
+          {customText.length > 9 && (
+            <p className="text-warning">⚠️ Text over 9 characters may not fit on the graph</p>
+          )}
         </div>
       )}
       

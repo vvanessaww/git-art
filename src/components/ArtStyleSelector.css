@@ -113,6 +113,14 @@
   text-align: center;
 }
 
+.custom-text-input .text-warning {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #ffd700;
+  text-align: center;
+  font-weight: 600;
+}
+
 .stats-toggle {
   margin-top: 2rem;
   text-align: center;

@@ -91,8 +91,30 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
       // Mix rainbow hue with contribution level for brightness
       const lightness = day.level === 0 ? 10 : 30 + (day.level * 15)
       const saturation = day.level === 0 ? 20 : 70 + (day.level * 5)
-      ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`
+      const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`
+      
+      // Add glow effect based on contribution level
+      if (day.level > 0) {
+        const glowIntensity = day.level * 3
+        ctx.shadowColor = color
+        ctx.shadowBlur = glowIntensity
+      }
+      
+      ctx.fillStyle = color
       ctx.fillRect(x, y, cellSize, cellSize)
+      
+      // Add brighter center for depth
+      if (day.level >= 2) {
+        ctx.shadowBlur = 0
+        const centerColor = `hsl(${hue}, ${saturation}%, ${lightness + 20}%)`
+        ctx.fillStyle = centerColor
+        const centerSize = cellSize * 0.4
+        const centerX = x + (cellSize - centerSize) / 2
+        const centerY = y + (cellSize - centerSize) / 2
+        ctx.fillRect(centerX, centerY, centerSize, centerSize)
+      }
+      
+      ctx.shadowBlur = 0
     })
   }
 
@@ -251,29 +273,53 @@ function ContributionCanvas({ contributionData, style, customText, username, sho
       const y = (index % 7) * (cellSize + gap)
       
       // Heat map colors: navy blue -> green -> yellow -> orange -> red
-      let color
+      let color, glowIntensity
       switch (day.level) {
         case 0:
           color = '#1a1a2e' // Navy blue (cold - no commits)
+          glowIntensity = 0
           break
         case 1:
           color = '#16c784' // Green (warming up)
+          glowIntensity = 3
           break
         case 2:
           color = '#ffd700' // Yellow (getting hot)
+          glowIntensity = 6
           break
         case 3:
           color = '#ff8c00' // Orange (hot)
+          glowIntensity = 10
           break
         case 4:
           color = '#ff4500' // Red-orange (very hot!)
+          glowIntensity = 15
           break
         default:
           color = '#1a1a2e'
+          glowIntensity = 0
+      }
+      
+      // Add glow effect
+      if (glowIntensity > 0) {
+        ctx.shadowColor = color
+        ctx.shadowBlur = glowIntensity
       }
       
       ctx.fillStyle = color
       ctx.fillRect(x, y, cellSize, cellSize)
+      
+      // Add brighter center for high activity (depth effect)
+      if (day.level >= 3) {
+        ctx.shadowBlur = 0
+        ctx.fillStyle = day.level === 4 ? '#ff6347' : '#ffa500'
+        const centerSize = cellSize * 0.5
+        const centerX = x + (cellSize - centerSize) / 2
+        const centerY = y + (cellSize - centerSize) / 2
+        ctx.fillRect(centerX, centerY, centerSize, centerSize)
+      }
+      
+      ctx.shadowBlur = 0
       
       // Add subtle border
       ctx.strokeStyle = 'rgba(0, 0, 0, 0.3)'

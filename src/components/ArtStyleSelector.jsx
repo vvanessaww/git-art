@@ -11,7 +11,6 @@ function ArtStyleSelector({ selectedStyle, setSelectedStyle, customText, setCust
   }, [selectedStyle, userName, customText, setCustomText])
   const styles = [
     { id: 'rainbow', name: 'Rainbow', description: 'Colorful gradient effect' },
-    { id: 'spiral', name: 'Spiral', description: 'Contributions spiral outward' },
     { id: 'tetris', name: 'Tetris', description: 'Blocks stacking based on activity' },
     { id: 'audio', name: 'Audio Visualizer', description: 'Equalizer bars dancing to commits' },
     { id: 'text', name: 'Custom Text', description: 'Shape contributions into text' },

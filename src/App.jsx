@@ -11,6 +11,7 @@ function App() {
   const [customText, setCustomText] = useState('')
   const [userName, setUserName] = useState('')
   const [showStats, setShowStats] = useState(true)
+  const [showAbout, setShowAbout] = useState(false)
 
   return (
     <div className="App">
@@ -52,9 +53,9 @@ function App() {
       
       <footer className="app-footer">
         <div className="footer-links">
-          <a href="https://github.com/vvanessaww/git-art" target="_blank" rel="noopener noreferrer">
-            [ about this project ]
-          </a>
+          <button onClick={() => setShowAbout(!showAbout)} className="footer-link-btn">
+            [ about this project {showAbout ? '−' : '+'} ]
+          </button>
           <span className="footer-divider">•</span>
           <a href="https://github.com/vvanessaww" target="_blank" rel="noopener noreferrer">
             [ github ]
@@ -64,6 +65,25 @@ function App() {
             [ linkedin ]
           </a>
         </div>
+        
+        {showAbout && (
+          <div className="about-section">
+            <p>
+              you can create art from anything—even your GitHub contributions. 
+              add a personal touch to your commits and turn your coding journey into something beautiful. 
+              choose from terminal-style visualizations, download your favorite, and share your unique developer story.
+            </p>
+            <a 
+              href="https://github.com/vvanessaww/git-art" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="repo-link"
+            >
+              → view source on github
+            </a>
+          </div>
+        )}
+        
         <p className="footer-credit">made with 🖤 by vanessa</p>
       </footer>
     </div>

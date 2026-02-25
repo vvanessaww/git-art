@@ -113,14 +113,21 @@ main {
   margin-bottom: 1rem;
 }
 
-.footer-links a {
+.footer-links a,
+.footer-link-btn {
   color: #00ff00;
   text-decoration: none;
   font-size: 0.9rem;
   transition: all 0.3s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 0;
 }
 
-.footer-links a:hover {
+.footer-links a:hover,
+.footer-link-btn:hover {
   color: #00ff00;
   text-shadow: 0 0 10px #00ff00;
 }
@@ -128,6 +135,47 @@ main {
 .footer-divider {
   color: #00ff0066;
   font-size: 0.9rem;
+}
+
+.about-section {
+  max-width: 600px;
+  margin: 1.5rem auto;
+  padding: 1.5rem;
+  background: #1a1a1a;
+  border: 1px solid #00ff0033;
+  border-radius: 4px;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.about-section p {
+  color: #00cc00;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 1rem 0;
+}
+
+.about-section .repo-link {
+  display: inline-block;
+  color: #00ff00;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.about-section .repo-link:hover {
+  text-shadow: 0 0 10px #00ff00;
+  transform: translateX(5px);
 }
 
 .footer-credit {

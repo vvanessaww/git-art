@@ -1,8 +1,23 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import './ArtStyleSelector.css'
 
 function ArtStyleSelector({ selectedStyle, setSelectedStyle, customText, setCustomText, userName, showStats, setShowStats }) {
-  // Auto-populate name when "name" style is selected (first name only)
+  const prevUserNameRef = useRef('')
+  
+  // Reset customText when username changes (new user detected)
+  useEffect(() => {
+    if (userName && userName !== prevUserNameRef.current) {
+      prevUserNameRef.current = userName
+      
+      // Auto-reset to new name only if "name" style is active
+      if (selectedStyle === 'name') {
+        const firstName = userName.split(' ')[0]
+        setCustomText(firstName.toUpperCase())
+      }
+    }
+  }, [userName, selectedStyle, setCustomText])
+  
+  // Auto-populate name when "name" style is selected (first time only)
   useEffect(() => {
     if (selectedStyle === 'name' && userName && !customText) {
       const firstName = userName.split(' ')[0]
